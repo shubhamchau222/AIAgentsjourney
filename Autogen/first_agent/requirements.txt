@@ -1,0 +1,7 @@
+autogen-agentchat~=0.2 
+groq
+python-dotenv
+dask[dataframe]
+pyautogen
+autogen
+streamlit
