@@ -1,0 +1,7 @@
+##Question
+
+1) langchain is productionable framework?
+2) langsmith only works with openai? or it supports other models/api providers as well?
+3) how to make sure which model is working for my usecase? or which model should i use for usecase?
+4) how the indexing happens in Vector database?
+5) How to optimize the retrieval process?
