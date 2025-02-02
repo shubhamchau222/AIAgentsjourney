@@ -1,0 +1,12 @@
+googleModels:
+  Embedding_models: ["models/embedding-001", "models/text-embedding-004"]
+  Inferencing_Models:
+      text_models: ["gemini-pro"]
+      multimodels: ["gemini-2.0-flash-exp","gemini-1.5-flash", "gemini-1.5-flash-8b"]
+GroqModels:
+  Inferencing_Models:
+      multimodels: ["llama-3.2-90b-vision-preview", "llama-3.2-11b-vision-preview"]
+      reasoning_Models: ["deepseek-r1-distill-llama-70b"]
+      text_models: ["distil-whisper-large-v3-en", "gemma2-9b-it",
+      "llama-3.3-70b-versatile", "llama-3.1-8b-instant",
+      "whisper-large-v3-turbo", "deepseek-r1-distill-llama-70b"]

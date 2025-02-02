@@ -86,10 +86,6 @@ def initialize_agents(task):
     return user, manager
 
 
-
-
-
-
 # Streamlit app UI
 st.title('Architecture Proposal Chatbot')
 st.write('Provide the task to initiate a conversation among the architects.')

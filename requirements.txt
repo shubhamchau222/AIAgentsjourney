@@ -1,0 +1,8 @@
+autogen
+langchain-groq
+langchain-google-genai
+google-generativeai
+langchain_community
+bs4
+langchain-chroma>=0.1.2
+chromadb
