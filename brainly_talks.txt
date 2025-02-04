@@ -1,0 +1,20 @@
+1) Hey how do you Evaluate the Document Extraction pipeline? 
+
+
+#Which model should we use? (langsmith sdk)
+- Why we're running: confused which model to use
+- parameter to consider: latency, accuracy, cost
+
+##-->>
+Requries:
+    1) ground trith data: input & output pair (Query, expected ans)
+    2) Applicatin output
+    3) Evaluator: Score by any llm 
+
+
+## llm judge to access the accuracy
+
+
+#####______________________ Build and Evaluate the document extraction -------------------
+
+

@@ -6,3 +6,5 @@ langchain_community
 bs4
 langchain-chroma>=0.1.2
 chromadb
+langgraph 
+langsmith
