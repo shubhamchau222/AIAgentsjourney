@@ -8,3 +8,7 @@ langchain-chroma>=0.1.2
 chromadb
 langgraph 
 langsmith
+pinecone
+langchain-pinecone 
+pinecone-notebooks
+scikit-learn

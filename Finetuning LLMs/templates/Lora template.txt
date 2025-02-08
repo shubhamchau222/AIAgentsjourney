@@ -1,0 +1,20 @@
+Task types:
+  Overview of the supported task types:
+    - SEQ_CLS: Text classification.
+    - SEQ_2_SEQ_LM: Sequence-to-sequence language modeling.
+    - Causal LM: Causal language modeling.
+    - TOKEN_CLS: Token classification.
+    - QUESTION_ANS: Question answering.
+    - FEATURE_EXTRACTION: Feature extraction. Provides the hidden states which can be used as embeddings or features
+      for downstream tasks.
+
+Target module: target_modules=[
+        "q_proj", 
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "gate_proj",
+        "up_proj",
+        "down_proj",
+        "lm_head",
+    ],
