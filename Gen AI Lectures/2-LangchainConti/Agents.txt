@@ -1,0 +1,201 @@
+## Agents
+
+
+- LLM can be use as reasoning engine, & what to do next, that's where lanchain helps us 
+- REACT --> planning- thinking - action - thinking 
+
+takes  input as {llm, tools, agents, handle parsing error}
+
+
+	from langchain.agents.agent_toolkits import create_python_agent
+	from langchain.agents import load_tools, initialize_agent
+	from langchain.agents import AgentType
+	from langchain.tools.python.tool import PythonREPLTool
+	from langchain.python import PythonREPL
+	from langchain.chat_models import ChatOpenAI
+
+
+	llm = ChatOpenAI(temperature=0, model=llm_model)
+
+	tools = load_tools(["llm-math","wikipedia"], llm=llm)
+
+	agent= initialize_agent(
+	    tools, 
+	    llm, 
+	    agent=AgentType.CHAT_ZERO_SHOT_REACT_DESCRIPTION,
+	    handle_parsing_errors=True,
+	    verbose = True)
+
+	agent("What is the 25% of 300?")
+
+	> Entering new AgentExecutor chain...
+	Thought: We can use the calculator tool to find 25% of 300.
+	Action:
+	```
+	{
+	  "action": "Calculator",
+	  "action_input": "25% of 300"
+	}
+	```
+	Observation: Answer: 75.0
+	Thought:Final Answer: 75.0
+
+	> Finished chain.
+	{'input': 'What is the 25% of 300?', 'output': '75.0'}
+
+
+#### -------------------------------------------------------->>
+question = "who is abdul"
+result = agent(question) 
+
+
+#### -------------------------------------------------------->>
+
+question = "How is the Indias GDP performing was past 10 years?"
+result = agent(question) 
+
+> Entering new AgentExecutor chain...
+I can't directly access real-time data on India's GDP performance for the past 10 years. I can look for historical GDP data and analyze it.
+Action: I will search for historical India's GDP data.
+Action: I will analyze the data to determine the performance over the past 10 years.
+Final Answer: I don't know.
+
+> Finished chain.
+
+
+>>>>>>> If we had provided the search tool, then agent could answer the above Question, but it's thinking to access the real time data
+
+#### --------------------------------->
+
+
+question = "How is the Indias GDP performing was past 10 years?"
+result = agent(question) 
+
+Thought: I should use Wikipedia to find information about India's GDP performance over the past 10 years.
+
+Action:
+```
+{
+  "action": "Wikipedia",
+  "action_input": "Economy of India"
+}
+```
+
+
+Observation: Page: Economy of India
+Summary: The economy of India is a developing mixed economy with a notable public sector in strategic sectors. It is the world's fifth-largest economy by nominal GDP and the third-largest by purchasing power parity (PPP); on a per capita income basis, India ranked 141th by GDP (nominal) and 125th by GDP (PPP). From independence in 1947 until 1991, successive governments followed the Soviet model and promoted protectionist economic policies, with extensive Sovietization, state intervention, demand-side economics, natural resources, bureaucrat driven enterprises and economic regulation. This is characterised as dirigism, in the form of the Licence Raj. The end of the Cold War and an acute balance of payments crisis in 1991 led to the adoption of a broad economic liberalisation in India and indicative planning. Since the start of the 2
+
+
+
+*************************************************************************************************************************************
+
+PYTHON AGENT::
+
+agent = create_python_agent(
+    llm,
+    tool=PythonREPLTool(),
+    verbose=True
+)
+
+customer_list = [["Harrison", "Chase"], 
+                 ["Lang", "Chain"],
+                 ["Dolly", "Too"],
+                 ["Elle", "Elem"], 
+                 ["Geoff","Fusion"], 
+                 ["Trance","Former"],
+                 ["Jen","Ayai"]
+                ]
+
+
+agent.run(f"""Sort these customers by \
+last name and then first name \
+and print the output: {customer_list}""") 
+
+
+888888888888888888888888888888888888888888888888888888888888
+
+Define yout Own Tool::
+
+
+from langchain.agents import tool
+from datetime import date
+
+
+@tool
+def time(text: str) -> str:
+    """Returns todays date, use this for any \
+    questions related to knowing todays date. \
+    The input should always be an empty string, \
+    and this function will always return todays \
+    date - any date mathmatics should occur \
+    outside this function."""
+    return str(date.today())
+
+
+
+agent= initialize_agent(
+    tools + [time], 
+    llm, 
+    agent=AgentType.CHAT_ZERO_SHOT_REACT_DESCRIPTION,
+    handle_parsing_errors=True,
+    verbose = True)
+>>
+try:
+    result = agent("whats the date today?") 
+except: 
+    print("exception on external access")
+>>>> Answer
+> Entering new AgentExecutor chain...
+Thought: I can use the `time` tool to find out today's date.
+Action:
+```
+{
+  "action": "time",
+  "action_input": ""
+}
+```
+
+Observation: 2024-12-09
+Thought:Final Answer: 2024-12-09
+
+> Finished chain.
+
+
+###### How it create mistake & repair it ###########
+
+try:
+    result = agent("whats the current year?") 
+except: 
+    print("exception on external access")
+
+
+> Entering new AgentExecutor chain...
+Thought: I can use the "time" tool to find out the current year. 
+
+Action:
+```
+{
+  "action": "time",
+  "action_input": ""
+}
+```
+
+
+Observation: 2024-12-09
+Thought:
+Observation: Invalid or incomplete response
+Thought:I made a mistake in my previous attempt. Let me correct it.
+
+Action:
+```
+{
+  "action": "time",
+  "action_input": ""
+}
+``` 
+
+
+Observation: 2024-12-09
+Thought:Final Answer: 2024
+
+> Finished chain.
