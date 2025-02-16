@@ -38,4 +38,6 @@ qa_prompt = ChatPromptTemplate.from_messages([
 def get_rag_chain(model="llama-3.1-8b-instant"):
     llm= ChatGroq(model)
     history_aware_retriever =history_aware_retriever(llm, retriever, contextualize_prompt)
-    pass
+    qa_chain= create_stuff_documents_chain(llm, qa_prompt)
+    rag_chain= create_retrieval_chain(history_aware_retriever, qa_chain)
+    return rag_chain

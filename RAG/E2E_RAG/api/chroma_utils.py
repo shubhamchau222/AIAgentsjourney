@@ -47,6 +47,8 @@ def index_document_to_chroma(file_path:str, file_id:int) -> bool:
         print(f"Error indexing document: {e}")
         return False
 
+
+
 def delete_documents_from_chroma(file_id:int):
     try:
         docs = vectore_store.get(where={"file_id": file_id})
