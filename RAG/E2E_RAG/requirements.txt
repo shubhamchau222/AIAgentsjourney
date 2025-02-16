@@ -1,0 +1,12 @@
+langchain_community
+pypdf
+langchain
+langchain-chroma
+langchain-groq
+langchain-chroma
+langchain-google-genai
+docx2txt
+langchain-core
+python-dotenv
+fastapi
+streamlit
