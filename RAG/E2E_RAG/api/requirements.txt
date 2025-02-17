@@ -10,4 +10,5 @@ langchain-core
 python-dotenv
 fastapi
 streamlit
+python-multipart
 uvicorn

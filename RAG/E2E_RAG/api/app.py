@@ -7,6 +7,12 @@ from chroma_utils import index_document_to_chroma, delete_documents_from_chroma
 import os
 import uuid
 import logging
+import uvicorn
+from dotenv import load_dotenv
+
+#loading the envs
+load_dotenv()
+print(os.getenv("GROQ_API_KEY"))
 
 logging.basicConfig(filename='application.log', level=logging.INFO)
 app = FastAPI()
@@ -29,3 +35,49 @@ def chat(query_input: QueryInput):
     return QueryResponse(answer=answer, session_id=session_id, model=query_input.model)
 
 
+@app.post("/upload-document")
+def upload_document(file: UploadFile=File(...)):
+    allowed_extensions = ['.pdf', '.docx', '.html']
+    file_extension= os.path.splitext(file.filename)[1].lower()
+
+    if file_extension not in allowed_extensions:
+        raise HTTPException(status_code=400, detail=f"Unsupported file type{file_extension}")
+    temp_file_path= f"temp_{file.filename}"
+
+    try:
+        #save the uploaded file to temp files
+        with open(temp_file_path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+        
+        file_id= insert_document_record(file.filename)
+        sucusses= index_document_to_chroma(temp_file_path, file_id)
+
+        if sucusses:
+            return {"message": f"File {file.filename} has been added successfully"}
+        else:
+            delete_document_record(file_id)
+            raise HTTPException(status_code=500, detail=f"Failed to index {file.filename}")
+    finally:
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
+@app.get("/list-docs",  response_model=list[DocumentInfo])
+def list_documents():
+    return get_all_documents()
+
+@app.post("/delete-doc")
+def delete_document(request: DeleteFileRequest):
+    #delete from chroma
+    chroma_delete_success= delete_documents_from_chroma(request.file_id)
+
+    if chroma_delete_success:
+        db_delete_success= delete_document_record(request.file_id)
+        if db_delete_success:
+            return {"message": f"Successfully deleted document with file id{request.file_id}"}
+        else:
+            return {"error": f"Deleted from chroma but failed to delete document from {request.file_id} database"}
+    else:
+        return {"error": f"Failed to delete document with file_id {request.file_id} from Chroma"}
+    
+if __name__ == "__main__":
+    uvicorn.run( app, host="127.0.0.1", port=8000)

@@ -5,6 +5,10 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from typing import List
 from langchain_core.documents import Document
+from dotenv import load_dotenv
+
+load_dotenv()
+print(os.getenv("GROQ_API_KEY"))
 
 # Initialize text splitter with specific chunk size and overlap
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200, length_function=len)
