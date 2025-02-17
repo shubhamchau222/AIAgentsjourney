@@ -8,7 +8,7 @@ This project implements an end-to-end History Aware Retrieval-Augmented Generati
 
 ## API IMAGE
 
-![Image Alt Text](images\api_img.PNG)
+![Image Alt Text](images/api_img.PNG)
 
 
 ## Requirements
