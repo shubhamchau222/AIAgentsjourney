@@ -1,5 +1,5 @@
 ## two sum (finding the if array having two elements whose sum equal to given number)
-# arr= [2, 7, 11, 3] #target 0
+# arr= [2, 7, 11, 3] #target 10
 
 def twosum(arr, num):
     #O(N2)
