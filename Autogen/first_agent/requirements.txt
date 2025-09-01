@@ -2,6 +2,6 @@ autogen-agentchat~=0.2
 groq
 python-dotenv
 dask[dataframe]
-pyautogen
+ag2
 autogen
 streamlit
